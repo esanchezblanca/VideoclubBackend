@@ -2,9 +2,10 @@ const express = require ('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
 const PORT = 5000;
 
-const movies = [
+let movies = [
     
     {id: 1, title: 'Shrek'},
     {id: 2, title: 'El príncipe de Zamunda'},
@@ -37,6 +38,31 @@ app.get('/movies/:id' , (req, res) => {
     const { id } = req.params;
     let movie = movies.find(movie => movie.id == id);
     res.json(movie);
+});
+
+
+app.post('/movies', (req, res) =>{
+    const { id, title } = req.body;
+    const movie = {id, title };
+    movies.push(movie);
+    res.json(movie);
+});
+
+app.put('/movies/:id', (req, res) => {
+    const {id} = req.params;
+    const {title} = req.body;
+    let movieList = movies.filter(movie => movie.id != id);
+    let movie = {id, title}
+    movieList.push(movie);
+    movies = movieList;
+    res.json(movie);
+});
+
+app.delete('/movies/:id', (req, res) => {
+    const {id} = req.params;
+    let movieList = movies.filter(movie => movie.id != id);
+    movies = movieList;
+    res.json('Deleted');
 });
 
 
