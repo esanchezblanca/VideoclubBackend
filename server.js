@@ -66,4 +66,83 @@ app.delete('/movies/:id', (req, res) => {
 });
 
 
+//PARTE DE USUARIOS
+let users = [];
+
+class User {
+    constructor (id, name, mail, password, movie) {
+        this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
+        this.movie = movie;
+    }
+}
+
+
+app.get('/users', (req, res) =>{
+    if (users.length == 0) {
+        res.send('No existen usuarios');
+    }else {
+        console.log(users.size);
+        res.json(users);
+    }
+});
+
+app.post('/users', (req, res) =>{
+    const { id, name, mail, password} = req.body;
+    let usuario = new User(id, name, mail, password);
+    users.push(usuario);
+    res.send('Usuario creado');
+});
+
+
+app.delete('/users/:id', (req, res) => {
+    const {id} = req.params;
+    let userList = users.filter(user => user.id != id);
+    users = userList;
+    res.json('User deleted');
+});
+
+
+app.post('/users/login', (req, res) => {
+    const { mail, password } = req.body;
+    let email = users.find(user => user.mail == mail);
+    let contrasena = users.find(user => user.password == password);
+    if (email == "" && contrasena == "") {
+        res.send('No existe el usuario');
+    }else {
+        res.json('Este usuario existe');
+    }
+});
+
+
+//PEDIDOS
+
+let arrPedidos = [];
+let today = new Date();
+
+class Order {
+    constructor (userId, movieId, orderDate, returnDate) {
+        this.userId = userId;
+        this.movieId = movieId;
+        this.orderDate = orderDate;
+        this.returnDate = returnDate;
+    }
+}
+
+app.post('/order', (req, res) =>{
+    const { userId, movieId} = req.body;
+    let pedido = new Order(userId, movieId, today, today +3);
+    arrPedidos.push(pedido);
+    let pelicula = movies.find(movie => movie.id == movieId);
+
+    let usuarioPedido = users.find(user => user.id == userId);
+
+    usuarioPedido.movie = pelicula;
+    res.send('Pedido creado');
+});
+
+
+
 app.listen(PORT, () => console.log('Server is working'))
