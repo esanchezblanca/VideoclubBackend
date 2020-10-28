@@ -1,9 +1,33 @@
 const express = require ('express');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); 
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+const Movie = mongoose.model('Movie', new mongoose.Schema({
+    id: {type: String},
+    title: {type:String},
+}));
+
+
+mongoose.connect('mongodb://localhost:27017/Videoclub', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+}).then(()=> console.log('Mongoose Connected'))
+.catch( e => console.error('Error Mongoose Connection', e));
+
 
 const app = express();
 app.use(bodyParser.json());
 const PORT = 5000;
+
+app.use( (req, res, next) => {
+    console.log ("he recibido una petición");
+    next();
+});
+
 
 let movies = [
     
@@ -28,34 +52,42 @@ let movies = [
     {id: 19, title: 'Intocable'},
     {id: 20, title: 'Cadena Perpetua'}
 ]  
-app.get('/', (req, res) => res.send('EXPRESS'));
+app.get('/', (req, res) => res.send('Bienvenido al videoclub'));
 
-app.get('/movies', (req, res) =>{
+const logger = (req, res, next) => {
+    console.log("prueba")
+    next();
+};
+
+const auth = (req, res, next) => {
+    if(req.headers.auth !== TOKEN) res.json({error: 'Usuario no autorizado'})
+    next;
+};
+
+
+//app.use(logger)
+
+app.get('/movies', async (req, res) => {
+    const { movie } = req.params;
+    const movies = await Movie.find(); 
     res.json(movies);
 });
 
-app.get('/movies/:id' , (req, res) => {
-    const { id } = req.params;
-    let movie = movies.find(movie => movie.id == id);
-    res.json(movie);
-});
 
-
-app.post('/movies', (req, res) =>{
-    const { id, title } = req.body;
-    const movie = {id, title };
-    movies.push(movie);
-    res.json(movie);
-});
-
-app.put('/movies/:id', (req, res) => {
-    const {id} = req.params;
+app.post('/movies', async (req, res) =>{
     const {title} = req.body;
-    let movieList = movies.filter(movie => movie.id != id);
-    let movie = {id, title}
-    movieList.push(movie);
-    movies = movieList;
+    const movie = new Movie({title});
+    await movie.save();
     res.json(movie);
+});
+
+app.put('/movies', async (req, res) => {
+    //traer modificar y guardar
+    const movie = await Movie.findById(req.body._id);
+    movie.titulo = fjjfd;
+    await movie.save();
+    res.json(movie);
+
 });
 
 app.delete('/movies/:id', (req, res) => {
@@ -80,7 +112,7 @@ class User {
 }
 
 
-app.get('/users', (req, res) =>{
+app.get('/users', (req, res) =>{ 
     if (users.length == 0) {
         res.send('No existen usuarios');
     }else {
@@ -89,13 +121,12 @@ app.get('/users', (req, res) =>{
     }
 });
 
-app.post('/users', (req, res) =>{
-    const { id, name, mail, password} = req.body;
-    let usuario = new User(id, name, mail, password);
-    users.push(usuario);
-    res.send('Usuario creado');
+app.post('/users/login', async (req, res)=>{ //modificar perfil
+    const {mail, password} = req.body;
+    if(!mail || !password) return res.json({error:'faltan datos'})
+    const usuario = new User(mail, password);
+    await user.save();
 });
-
 
 app.delete('/users/:id', (req, res) => {
     const {id} = req.params;
@@ -105,24 +136,12 @@ app.delete('/users/:id', (req, res) => {
 });
 
 
-app.post('/users/login', (req, res) => {
-    const { mail, password } = req.body;
-    let email = users.find(user => user.mail == mail);
-    let contrasena = users.find(user => user.password == password);
-    if (email == "" && contrasena == "") {
-        res.send('No existe el usuario');
-    }else {
-        res.json('Este usuario existe');
-    }
-});
-
-
 //PEDIDOS
 
-let arrPedidos = [];
-let today = new Date();
+let arrPedidos = []; //creo array vacío para ir metiendo pedidos
+let today = new Date(); //creo una variable con la fecha actual
 
-class Order {
+class Order { //objeto para meter en array con sus valores
     constructor (userId, movieId, orderDate, returnDate) {
         this.userId = userId;
         this.movieId = movieId;
@@ -131,11 +150,11 @@ class Order {
     }
 }
 
-app.post('/order', (req, res) =>{
+app.post('/order', (req, res) =>{ //va a identificar dos id: peliculas y usuario
     const { userId, movieId} = req.body;
     let pedido = new Order(userId, movieId, today, today +3);
     arrPedidos.push(pedido);
-    let pelicula = movies.find(movie => movie.id == movieId);
+    let pelicula = movies.find(movie => movie.id === movieId);
 
     let usuarioPedido = users.find(user => user.id == userId);
 
@@ -144,5 +163,24 @@ app.post('/order', (req, res) =>{
 });
 
 
+app.post('/pedido', (req, res) => {
+
+    const fechaEntrega = newDate();
+    fechaEntrega.setDay(fechaEntrega.getDay() + 7); 
+    
+    const order = { 
+        idPedido: getRandom(1, 1000),
+        idUsuario: req.body.idUsuario,
+        idPelicula: req.body.idPelicula,
+        fechaPedido: newDate(),
+        fechaEntrega,
+    }
+    orders.push(order)
+    res.json(order);
+});
 
 app.listen(PORT, () => console.log('Server is working'))
+
+
+//const fechaDevolucion = new Date();
+//fechaDevolucion.setDate(fechaDevolucion.getDate() + 3);
