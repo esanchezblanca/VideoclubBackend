@@ -4,7 +4,7 @@ const Movie = require('./movieModel');
 module.exports.getMovie = async (req, res) =>{
     //las trae por id
     const data = await Movie.find();
-    res.json(data)//o movie
+    res.json(data)
 };
 
 module.exports.createMovie = async (req, res) => {
@@ -26,7 +26,6 @@ module.exports.updateMovie = async (req, res) => {
 module.exports.deleteMovie = async (req, res) => {
     //borrar películas
     const {id} = req.params;
-    console.log(req.params);
     const movie = await Movie.findById(id);
     await Movie.deleteOne(movie);
     res.json('Deleted');
