@@ -1,7 +1,7 @@
 {
-  "name": "Netflix",
+  "name": "Videoclub",
   "version": "1.0.0",
-  "description": "",
+  "description": "Proyecto de videoclub",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js 5000",
