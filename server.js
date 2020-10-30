@@ -1,10 +1,13 @@
 const express = require ('express');
 const app = express();
 const routesMovie = require('./components/movie/movieRouter.js');
+const routesUser = require('./components/user/userRouter.js');
+
 
 
 app.use(express.json());
 app.use('/', routesMovie);
+app.use('/', routesUser);
 
 //rutas
 

@@ -33,7 +33,7 @@ module.exports.createUser = async (req, res) => {
 };
 
 //DELETE USER
-module.exports.deleteUser = (req, res) => {
+module.exports.deleteUser = async (req, res) => {
     const {id} = req.params;
     const user = await User.findById(id);
     await User.deleteOne(user);
