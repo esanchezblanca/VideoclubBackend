@@ -1,22 +1,35 @@
 const User = require('./userModel');
-
+const jwt = require('jsonwebtoken');
+const config = require ('./config');
 
 //POST USER
-module.exports.login =  async (req, res)=>{ 
-    const {mail, password} = req.body;
-    if(!mail || !password) return res.json({error:'faltan datos'})
-    const user = new User(mail, password);
-    await user.save();
+module.exports.login = async (req, res) => {
+   let user = User.find(req.body.mail)
+   let password = User.find(req.body.password)
+    if ( user && password) {
+        const payload = {
+            check: true
+        };
+        const token = jwt.sign(payload, config.key, {
+            expiresIn: 1440
+        });
+        res.json({
+            mensaje: 'Autenticación correcta',
+            token: token
+        });
+    } else {
+        res.json({ mensaje: "Usuario o contraseña incorrectos" })
+    }
 };
 
 //GET USER
-module.exports.getUser = async (req, res)=>{
+module.exports.getUser = async (req, res) => {
     const data = await User.find();
     res.json(data);
 };
 
 module.exports.updateUser = async (req, res) => {
-    //modificar película
+    //modificar usuario
     const user = await User.findById(req.body.id);
     user.name = req.body.name;
     await user.save();
@@ -34,7 +47,7 @@ module.exports.createUser = async (req, res) => {
 
 //DELETE USER
 module.exports.deleteUser = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     const user = await User.findById(id);
     await User.deleteOne(user);
     res.json('User deleted');

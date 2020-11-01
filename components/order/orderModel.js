@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 const OrderSchema = new mongoose.Schema({
-    title: { type: String, default: 'test' },
+    userId: { type: String, default: 'test' },
+    movieId: {type: String, default: 'test'},
     createdAt: { type: Date, default: function date() {
-    return new Date();
-}}
+        return new Date();
+    }},
+    returnDate: {type: Date, default: function date() {
+        let result = new Date();
+        result.setDate(result.getDate() + 3);
+        return result;
+
+    }}
 });
 
-Order = mongoose.model3('Order', OrderSchema);
-const order = new Order({});
-
 module.exports = mongoose.model('Order', OrderSchema);
-
 
