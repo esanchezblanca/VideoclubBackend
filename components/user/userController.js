@@ -4,9 +4,11 @@ const config = require ('./config');
 
 //POST USER
 module.exports.login = async (req, res) => {
-   let user = User.find(req.body.mail)
-   let password = User.find(req.body.password)
-    if ( user && password) {
+   let user = await User.exists({'mail': req.body.mail})
+   let password = await User.exists({'mail': req.body.mail,'password':req.body.password})
+    
+   
+   if ( user && password) {
         const payload = {
             check: true
         };
