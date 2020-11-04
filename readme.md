@@ -1,10 +1,27 @@
-Videoclub online
-Creación de proyecto en el que se permite la creación, modificación y baja de usuarios que pueden alquilar las películas disponibles en el catálogo.
+# Videoclub online
+
+Proyecto creado para backend que simula un videoclub. En este videoclub se pueden crear usuarios para hacer un login. Una vez hecho este login, podremos acceder a diversas secciones como la de hacer pedidos, consultarlos, modificar y eliminar películas de la base de datos del videoclub.
 
 
-Acerca del Proyecto
-Para poder ejecutar el proyecto es necesario Postman.
-A través de Postman se pueden dar de alta, de baja y modificar los usuarios. 
-Estos usuarios podrán ver las películas disponibles y hacer pedidos.
+### Requisitos e instalación 
 
-El pedido se hará relacionando el id de la película y asignándole el id del usuario que realiza la petición. El sistema calculará el día en el que se solicita y dará al usuario tres días para poder devolverla.
+Para poder ejecutar Videoclub backend será necesario tener instalado Postman, Mongo DB y Visual Studio.
+
+Descargue el zip del proyecto, descomprímalo y ábralo con Visual Studio Code o cualquier programa similar.
+
+Necesitará Postman para enviar peticiones al servidor como por ejemplo la de crear un pedido.
+
+### Descripción del proyecto
+
+
+
+
+### Ejecución del proyecto
+
+
+
+
+## Licencia 
+
+Este proyecto ha sido realizado por Elena Sánchez de la Blanca y está sujeto a la licencia MIT. Para obtener más información, por favor diríjase al archivo LICENSE que encontrará adjunto. 
+

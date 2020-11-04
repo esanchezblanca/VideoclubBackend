@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const controller = require('./movieController');
-const middlewareToken = require('../../middleware')
+const middlewareToken = require('../../middleware');
 module.exports = router;
 
 //RUTAS

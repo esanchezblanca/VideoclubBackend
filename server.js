@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 
 
 
-
 app.use(express.json());
 app.use('/', routesMovie);
 app.use('/', routesUser);
