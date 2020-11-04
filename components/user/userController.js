@@ -20,7 +20,7 @@ module.exports.login = async (req, res) => {
             token: token
         });
     } else {
-        res.json({ mensaje: "Usuario o contraseña incorrectos" }) 
+        res.json({ mensaje: "Datos incorrectos" }) 
     }
 };
 
