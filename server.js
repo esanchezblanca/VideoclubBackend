@@ -7,7 +7,7 @@ const routesOrder = require('./components/order/orderRouter.js');
 
 const bodyParser = require('body-parser'); 
 const mongoose = require('mongoose');
-
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/Videoclub';
 
 
 app.use(express.json());
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 
 
-mongoose.connect('mongodb://localhost:27017/Videoclub', {
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
