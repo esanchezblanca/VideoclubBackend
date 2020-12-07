@@ -9,6 +9,9 @@ module.exports.login = async (req, res) => {
     
    
    if ( user && password) {
+       console.log(user)
+       console.log(password)
+
         const payload = {
             check: true
         };
@@ -17,10 +20,15 @@ module.exports.login = async (req, res) => {
         });
         res.json({
             mensaje: 'Autenticación correcta',
+            code: 200,
+            status: 200,
             token: token
         });
     } else {
-        res.json({ mensaje: "Datos incorrectos" }) 
+        res.json({
+             code: 403,
+             status: 403,
+             mensaje: "Datos incorrectos" }) 
     }
 };
 

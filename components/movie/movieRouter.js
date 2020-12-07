@@ -7,8 +7,8 @@ module.exports = router;
 
 router.get('/movies', controller.getMovie);
 
-router.post('/movies',middlewareToken.tokenMiddle, controller.createMovie);
+router.post('/movies', controller.createMovie);
 
-router.put('/movies',middlewareToken.tokenMiddle, controller.updateMovie);
+router.put('/movies', controller.updateMovie);
 
-router.delete('/movies/:id',middlewareToken.tokenMiddle, controller.deleteMovie);
+router.delete('/movies/:id', controller.deleteMovie);

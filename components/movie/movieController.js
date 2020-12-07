@@ -18,6 +18,7 @@ module.exports.updateMovie = async (req, res) => {
     //modificar película
     const movie = await Movie.findById(req.body.id);
     movie.title = req.body.title;
+    movie.image = req.body.image;
     await movie.save();
     res.json(movie);
 
