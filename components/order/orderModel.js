@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const OrderSchema = new mongoose.Schema({
-    userId: { type: String, default: 'test' },
+    mail: { type: String, default: 'test' },
     movieId: {type: String, default: 'test'},
     createdAt: { type: Date, default: function date() {
         return new Date();

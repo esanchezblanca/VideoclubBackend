@@ -19,6 +19,7 @@ module.exports.updateMovie = async (req, res) => {
     const movie = await Movie.findById(req.body.id);
     movie.title = req.body.title;
     movie.image = req.body.image;
+    movie.plot = req.body.plot;
     await movie.save();
     res.json(movie);
 
@@ -26,10 +27,15 @@ module.exports.updateMovie = async (req, res) => {
 
 module.exports.deleteMovie = async (req, res) => {
     //borrar películas
-    const {id} = req.params;
-    const movie = await Movie.findById(id);
-    await Movie.deleteOne(movie);
-    res.json('Deleted');
+    try{
+        const {id} = req.params;
+        const movie = await Movie.findById(id);
+        await Movie.deleteOne(movie);
+        res.json('Deleted');
+    }catch(err){
+        console.error(err);
+    }
+    
 };
 
 

@@ -1,16 +1,16 @@
 const User = require('./userModel');
 const jwt = require('jsonwebtoken');
-const config = require ('./config');
+const config = require('./config');
 
 //POST USER
 module.exports.login = async (req, res) => {
-   let user = await User.exists({'mail': req.body.mail})
-   let password = await User.exists({'mail': req.body.mail,'password':req.body.password})
-    
-   
-   if ( user && password) {
-       console.log(user)
-       console.log(password)
+    let user = await User.exists({ 'mail': req.body.mail })
+    let password = await User.exists({ 'mail': req.body.mail, 'password': req.body.password })
+
+
+    if (user && password) {
+        console.log(user)
+        console.log(password)
 
         const payload = {
             check: true
@@ -22,13 +22,15 @@ module.exports.login = async (req, res) => {
             mensaje: 'Autenticación correcta',
             code: 200,
             status: 200,
-            token: token
+            token: token,
+            mail: req.body.mail
         });
     } else {
         res.json({
-             code: 403,
-             status: 403,
-             mensaje: "Datos incorrectos" }) 
+            code: 403,
+            status: 403,
+            mensaje: "Datos incorrectos"
+        })
     }
 };
 
@@ -37,6 +39,16 @@ module.exports.getUser = async (req, res) => {
     const data = await User.find();
     res.json(data);
 };
+
+module.exports.getSingleUser = async (req, res) => {
+    const user = await User.findOne(req.body.mail);
+    console.log(user)
+    res.json({
+        status: 200,
+        userData: user
+    });
+
+}
 
 module.exports.updateUser = async (req, res) => {
     //modificar usuario

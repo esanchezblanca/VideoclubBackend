@@ -5,6 +5,8 @@ module.exports = router;
 
 router.get('/users', controller.getUser);
 
+router.get('/singleUser', controller.getSingleUser);
+
 router.post('/users/login', controller.login);
 
 router.post('/users', controller.createUser);
